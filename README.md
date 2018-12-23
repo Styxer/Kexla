@@ -12,7 +12,7 @@ Kexla is avialbe via [NuGet](https://www.nuget.org/packages/Ofir.Kexla).
 
 2. Use the libary
 ```C# 
-using Kexla;;
+using Kexla;
 ```
 3. Define your own class based on the property(s) that you need
 ```C#
