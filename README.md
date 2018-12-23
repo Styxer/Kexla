@@ -1,6 +1,6 @@
 # Kexla
 
-##Getting Started 
+## Getting Started 
 
 Kexla is avialbe via [NuGet](https://www.nuget.org/packages/Ofir.Kexla). 
 
