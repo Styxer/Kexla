@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kexla
 {
-    class WMIProps : Attribute
+    public class WMIProps : Attribute
     {
 
         public string Name { get; set; }

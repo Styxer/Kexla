@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kexla.Attributes
+namespace Kexla
 {
     public class WMIClass : Attribute
     {
+
+        public string Name { get; set; }
+        public string Namespace { get; set; }
+
         public WMIClass()
         {
 
@@ -22,7 +26,5 @@ namespace Kexla.Attributes
             Namespace = wmiNamespace;
         }
 
-        public string Name { get; set; }
-        public string Namespace { get; set; }
     }
 }

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kexla", "Kexla\Kexla.csproj", "{D21A1B84-B96C-43F3-B65F-905064B45649}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KexlaTest", "KexlaTest\KexlaTest.csproj", "{1A98CBE0-975F-4DFF-AC9F-4A69CB231AAB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D21A1B84-B96C-43F3-B65F-905064B45649}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D21A1B84-B96C-43F3-B65F-905064B45649}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D21A1B84-B96C-43F3-B65F-905064B45649}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D21A1B84-B96C-43F3-B65F-905064B45649}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A98CBE0-975F-4DFF-AC9F-4A69CB231AAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A98CBE0-975F-4DFF-AC9F-4A69CB231AAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A98CBE0-975F-4DFF-AC9F-4A69CB231AAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A98CBE0-975F-4DFF-AC9F-4A69CB231AAB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
