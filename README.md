@@ -9,6 +9,7 @@ Kexla is avialbe via [NuGet](https://www.nuget.org/packages/Ofir.Kexla).
 ###### A - Query The Data
 
 1.Add the packge to your project via NuGet package manager
+
 2. Use the libary
 ```C# 
 using Kexla;;
