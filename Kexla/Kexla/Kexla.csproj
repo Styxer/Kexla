@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\WMIClass.cs" />
+    <Compile Include="Attributes\WMIIgnore.cs" />
     <Compile Include="WMISearcher.cs" />
     <Compile Include="HelperFuncs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

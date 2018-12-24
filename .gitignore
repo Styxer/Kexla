@@ -187,3 +187,8 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+*.nuspec
+
+*.nupkg
+
+Kexla/Kexla/nuget\.exe

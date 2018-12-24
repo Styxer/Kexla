@@ -8,18 +8,24 @@ using System.Threading.Tasks;
 namespace KexlaTest
 {
 
-    [WMIClass("Win32_NetworkAdapter")]
+    [WMIClass(name: "Win32_NetworkAdapter")]
     public class TestClassNetworkAdapter
     {
-        [WMIProps("Name")]
+        [WMIProps(name: "MACAddress")]
         public string MACAddress { get; set; }
 
+
         public string Caption { get; set; }
+
+        [WMIIgnore]
+        public string GUID { get; set; }
 
         public override string ToString()
         {
             return "MACAddress " + MACAddress
-                + " Caption" + Caption;
+                + " Caption" + Caption
+                + "GUID " + GUID;
+
         }
 
     }

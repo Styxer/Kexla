@@ -32,7 +32,7 @@ namespace Kexla
                 propsList.Add(getWMIPropName(propInfo));
             }
 
-            return String.Join(" , ", propsList);
+            return String.Join(" , ", propsList.Where(x => !String.IsNullOrEmpty(x)));
 
         }
 
@@ -43,18 +43,23 @@ namespace Kexla
 
             foreach (var propInfo in instance.GetType().GetProperties())
             {
+
                 propName = getWMIPropName(propInfo);
 
-                var propValue = manageObject.Properties[propName].Value;
+                if (!String.IsNullOrEmpty(propName))
+                {
+                    var propValue = manageObject.Properties[propName].Value;
 
-                if (propValue == null)
-                {
-                    propInfo.SetValue(obj: instance, value: null);
+                    if (propValue == null)
+                    {
+                        propInfo.SetValue(obj: instance, value: null);
+                    }
+                    else
+                    {
+                        propInfo.SetValue(obj: instance, value: Convert.ChangeType(value: propValue, conversionType: propInfo.PropertyType));
+                    }
                 }
-                else
-                {
-                    propInfo.SetValue(obj: instance, value: Convert.ChangeType(value: propValue, conversionType: propInfo.PropertyType));
-                }
+
             }
 
             return instance;
@@ -64,13 +69,29 @@ namespace Kexla
         {
             string propName = String.Empty;
 
-            WMIProps prop = propInfo.GetCustomAttribute<WMIProps>();
-            if (prop == null)
-                propName = propInfo.Name;
-            else
-                propName = propInfo.Name;
+            if (checkForIgnorePors(propInfo))
+            {
+                WMIProps prop = propInfo.GetCustomAttribute<WMIProps>();
+                if (prop == null)
+                    propName = propInfo.Name;
+                else
+                    propName = propInfo.Name;
+            }
 
             return propName;
+        }
+
+        private static bool checkForIgnorePors(PropertyInfo propInfo)
+        {
+            bool result = false;
+            WMIIgnore ignoreProp = propInfo.GetCustomAttribute<WMIIgnore>();
+
+
+            if (ignoreProp == null)
+                result = true;
+
+            return result;
+
         }
     }
 }
