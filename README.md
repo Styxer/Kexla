@@ -16,7 +16,7 @@ using Kexla;
 ```
 3. Define your own class based on the property(s) that you need
 ```C#
-[WMIClass(name: "Win32_NetworkAdapter")]
+    [WMIClass(name: "Win32_NetworkAdapter")]
     public class NetworkAdapter
     {
         [WMIProps(name: "MACAddress")]
