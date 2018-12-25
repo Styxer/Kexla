@@ -17,20 +17,20 @@ using Kexla;
 3. Define your own class based on the property(s) that you need
 ```C#
 [WMIClass(name: "Win32_NetworkAdapter")]
-    public class NetworkAdapter
+public class NetworkAdapter
+{
+    [WMIProps(name: "MACAddress")]
+    public string MACAddress { get; set; }
+
+    public string Caption { get; set; }
+
+    public override string ToString()
     {
-        [WMIProps(name: "MACAddress")]
-        public string MACAddress { get; set; }
-
-        public string Caption { get; set; }
-
-        public override string ToString()
-        {
-            return "MACAddress " + MACAddress
-                + " Caption" + Caption;
-        }
-
+        return "MACAddress " + MACAddress
+            + " Caption" + Caption;
     }
+
+}
 ```
 
 4.Query The Data
