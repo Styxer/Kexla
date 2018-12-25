@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,19 +33,23 @@ namespace KexlaTest
         public UInt16 AdapterTypeID { get; set; }
         public bool AutoSense { get; set; }
 
+
+        private PropertyInfo[] _PropertyInfos = null;
+
         public override string ToString()
         {
-            return
-                "MACAddress " + MACAddress
-                + " Caption" + Caption
-                + "GUID " + GUID
-                 + " InstallDate " + InstallDate
-            + " TimeOfLastResetTimeSpan " + TimeOfLastResetTimeSpan
-             + " TimeOfLastResetDateTime " + TimeOfLastResetDateTime
-             + " TimeOfLastResetDateTimeOffset " + TimeOfLastResetDateTimeOffset
-             + " AdapterTypeID " + AdapterTypeID
-             + " AutoSense " + AutoSense;
+            if (_PropertyInfos == null)
+                _PropertyInfos = this.GetType().GetProperties();
 
+            var sb = new StringBuilder();
+
+            foreach (var info in _PropertyInfos)
+            {
+                var value = info.GetValue(this, null) ?? "(null)";
+                sb.AppendLine(info.Name + ": " + value.ToString());
+            }
+
+            return sb.ToString();
         }
 
     }
