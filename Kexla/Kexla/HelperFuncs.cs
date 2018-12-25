@@ -43,23 +43,42 @@ namespace Kexla
 
             foreach (var propInfo in instance.GetType().GetProperties())
             {
-
                 propName = getWMIPropName(propInfo);
 
                 if (!String.IsNullOrEmpty(propName))
                 {
+                    var propertyType = propInfo.PropertyType;
+                    var targetType = IsNullableType(propertyType) ? Nullable.GetUnderlyingType(propertyType) : propertyType;
+
                     var propValue = manageObject.Properties[propName].Value;
 
                     if (propValue == null)
                     {
                         propInfo.SetValue(obj: instance, value: null);
                     }
+                    else if (targetType == typeof(DateTime) || targetType == typeof(DateTimeOffset) | targetType == typeof(TimeSpan))
+                    {
+                        WMIProps prop = propInfo.GetCustomAttribute<WMIProps>();
+                        var dateTime = ManagementDateTimeConverter.ToDateTime(propValue.ToString());
+
+                        if (targetType == typeof(DateTime))
+                        {
+                            propInfo.SetValue(obj: instance, value: dateTime);
+                        }
+                        else if (targetType == typeof(DateTimeOffset))
+                        {
+                            propInfo.SetValue(obj: instance, value: new DateTimeOffset(dateTime));
+                        }
+                        else if (targetType == typeof(TimeSpan))
+                        {
+                            propInfo.SetValue(obj: instance, value: dateTime.TimeOfDay);
+                        }
+                    }
                     else
                     {
                         propInfo.SetValue(obj: instance, value: Convert.ChangeType(value: propValue, conversionType: propInfo.PropertyType));
                     }
                 }
-
             }
 
             return instance;
@@ -75,7 +94,7 @@ namespace Kexla
                 if (prop == null)
                     propName = propInfo.Name;
                 else
-                    propName = propInfo.Name;
+                    propName = prop.Name;
             }
 
             return propName;
@@ -92,6 +111,11 @@ namespace Kexla
 
             return result;
 
+        }
+
+        private static bool IsNullableType(Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
         }
     }
 }

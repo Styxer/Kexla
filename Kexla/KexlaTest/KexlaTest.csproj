@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Kexla, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ofir.Kexla.0.1.1\lib\net45\Kexla.dll</HintPath>
+      <HintPath>..\packages\Ofir.Kexla.0.1.4\lib\net45\Kexla.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

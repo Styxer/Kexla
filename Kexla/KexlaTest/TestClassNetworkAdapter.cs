@@ -20,11 +20,30 @@ namespace KexlaTest
         [WMIIgnore]
         public string GUID { get; set; }
 
+        public DateTime InstallDate { get; set; }
+
+        [WMIProps(name: "TimeOfLastReset")]
+        public TimeSpan TimeOfLastResetTimeSpan { get; set; }
+        [WMIProps(name: "TimeOfLastReset")]
+        public DateTime TimeOfLastResetDateTime { get; set; }
+        [WMIProps(name: "TimeOfLastReset")]
+        public DateTimeOffset TimeOfLastResetDateTimeOffset { get; set; }
+
+        public UInt16 AdapterTypeID { get; set; }
+        public bool AutoSense { get; set; }
+
         public override string ToString()
         {
-            return "MACAddress " + MACAddress
+            return
+                "MACAddress " + MACAddress
                 + " Caption" + Caption
-                + "GUID " + GUID;
+                + "GUID " + GUID
+                 + " InstallDate " + InstallDate
+            + " TimeOfLastResetTimeSpan " + TimeOfLastResetTimeSpan
+             + " TimeOfLastResetDateTime " + TimeOfLastResetDateTime
+             + " TimeOfLastResetDateTimeOffset " + TimeOfLastResetDateTimeOffset
+             + " AdapterTypeID " + AdapterTypeID
+             + " AutoSense " + AutoSense;
 
         }
 
