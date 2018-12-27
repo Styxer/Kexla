@@ -10,7 +10,7 @@ namespace KexlaTest
 {
 
     [WMIClass(name: "Win32_NetworkAdapter")]
-    public class TestClassNetworkAdapter
+    public class NetworkAdapter
     {
         [WMIProps(name: "MACAddress")]
         public string MACAddress { get; set; }

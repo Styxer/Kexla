@@ -6,7 +6,7 @@ using Kexla;
 namespace KexlaTest
 {
     [TestClass]
-    public class Examples
+    public class SearchExamples
     {
         [TestMethod]
 
@@ -14,7 +14,7 @@ namespace KexlaTest
         {
             WMISearcher searcher = new WMISearcher(WMIClassTypes.CimV2);
 
-            var result = searcher.Query<TestClassNetworkAdapter>();
+            var result = searcher.Query<NetworkAdapter>();
 
             foreach (var item in result)
             {
