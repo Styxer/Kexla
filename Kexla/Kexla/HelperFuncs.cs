@@ -23,20 +23,35 @@ namespace Kexla
 
         }
 
-        public static string getSearchProps(Type type)
+        public static List<string> getSearchPropsNames(Type type)
         {
             var propsList = new List<string>();
 
             foreach (PropertyInfo propInfo in type.GetProperties())
             {
-                propsList.Add(getWMIPropName(propInfo));
+                string prop = getWMIPropName(propInfo);
+                if (!String.IsNullOrEmpty(prop))
+                {
+                    propsList.Add(getWMIPropName(propInfo));
+                }
             }
 
-            return String.Join(" , ", propsList.Where(x => !String.IsNullOrEmpty(x)));
-
+            return propsList;
         }
 
-        public static object getSearchObjec(ManagementObject manageObject, Type type)
+        public static List<object> getSearchPropValues(object obj)
+        {
+            var propsValues = new List<object>();
+            foreach (var info in obj.GetType().GetProperties())
+            {
+                var value = info.GetValue(obj) ?? "null";
+                propsValues.Add(value);
+            }
+
+            return propsValues;
+        }
+
+        public static object getSearchObjects(ManagementObject manageObject, Type type)
         {
             var instance = Activator.CreateInstance(type);
             string propName = String.Empty;

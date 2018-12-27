@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kexla
 {
-    public class WMISearcher
+    class WMISearcher
     {
 
         private WMIClassTypes classType;
@@ -19,14 +19,15 @@ namespace Kexla
 
         public IEnumerable<T> Query<T>()
         {
-            string rootNamespace = classType.ToString();
+            var rootNamespace = classType.ToString();
             var results = new List<T>();
 
-            string classNmae = HelperFuncs.getClassName(typeof(T));
+            var classNmae = HelperFuncs.getClassName(typeof(T));
 
-            string searchprops = HelperFuncs.getSearchProps(typeof(T));
+            var searchprops = String.Join(" , ", HelperFuncs.getSearchPropsNames(typeof(T)));
 
-            string searchQuery = String.Format("SELECT {0} FROM {1} ", searchprops, classNmae);
+
+            var searchQuery = String.Format("SELECT {0} FROM {1} ", searchprops, classNmae);
 
 
             using (var searcher = new ManagementObjectSearcher(rootNamespace, searchQuery))
@@ -36,7 +37,7 @@ namespace Kexla
                     foreach (ManagementObject obj in searcherData)
                     {
 
-                        var searchItem = (T)HelperFuncs.getSearchObjec(obj, typeof(T));
+                        var searchItem = (T)HelperFuncs.getSearchObjects(obj, typeof(T));
 
                         results.Add(searchItem);
 
@@ -48,5 +49,7 @@ namespace Kexla
 
             return results;
         }
+
+
     }
 }

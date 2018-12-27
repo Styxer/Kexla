@@ -45,7 +45,7 @@ namespace KexlaTest
 
             foreach (var info in _PropertyInfos)
             {
-                var value = info.GetValue(this, null) ?? "(null)";
+                var value = info.GetValue(this) ?? "null";
                 sb.AppendLine(info.Name + ": " + value.ToString());
             }
 
