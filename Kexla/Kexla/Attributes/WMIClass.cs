@@ -8,23 +8,32 @@ namespace Kexla
 {
     public class WMIClass : Attribute
     {
-
         public string Name { get; set; }
         public string Namespace { get; set; }
+        public string Searchkey { get; set; }
 
         public WMIClass()
         {
 
         }
-        public WMIClass(string name)
+        public WMIClass(string Name)
         {
-            Name = name;
+            this.Name = Name;
         }
-        public WMIClass(string name, string wmiNamespace)
+
+        public WMIClass(string Name, string Namespace)
         {
-            Name = name;
-            Namespace = wmiNamespace;
+            this.Name = Name;
+            this.Namespace = Namespace;
         }
+
+        public WMIClass(string Name, string Namespace, string SearchKey)
+        {
+            this.Name = Name;
+            this.Namespace = Namespace;
+            this.Searchkey = Searchkey;
+        }
+
 
     }
 }

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D21A1B84-B96C-43F3-B65F-905064B45649}</ProjectGuid>
+    <ProjectGuid>{91713CE4-286F-4390-ABC8-34ADDE77BD0D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kexla</RootNamespace>
@@ -42,11 +42,12 @@
   <ItemGroup>
     <Compile Include="Attributes\WMIClass.cs" />
     <Compile Include="Attributes\WMIIgnore.cs" />
-    <Compile Include="WMISearcher.cs" />
+    <Compile Include="Attributes\WMIProps.cs" />
     <Compile Include="HelperFuncs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Attributes\WMIProps.cs" />
     <Compile Include="WMIClassTypes.cs" />
+    <Compile Include="WMIMethods.cs" />
+    <Compile Include="WMISearcher.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

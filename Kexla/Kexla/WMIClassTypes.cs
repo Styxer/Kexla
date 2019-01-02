@@ -13,7 +13,7 @@ namespace Kexla
 
 
         public static readonly WMIClassTypes CimV2 = new WMIClassTypes(1, @"root\CimV2");
-
+        public static readonly WMIClassTypes WMI = new WMIClassTypes(2, @"root\WMI");
 
 
         private WMIClassTypes(int value, String name)

@@ -1,41 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Kexla
 {
-    class WMIMethods
+    public class WMIMethods//TODO read instumentation
     {
-
-        internal static T ExecuteMethod<T>(object obj, T parameters)
+        /// <summary>
+        /// Executes WMI instance method with  parameters
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="classObj"></param>
+        /// <param name="parameters">function paramaters</param>
+        public static void ExecuteMethod(object classObj, params object[] parameters)
         {
-            /*
-             * WMIClassName
-             * methodName
-             * funcParams
-             */
-            //  var inParams = new object[1];
             var inParams = new List<object>();
-            var data = parameters.ToString()
-                .Replace("{", String.Empty)
-                 .Replace("}", String.Empty)
-                 .Split('=')
-                 [1];
+            foreach (var param in parameters)
+            {
+                inParams.Add(param);
+            }
 
 
-            var searchprops = HelperFuncs.getSearchPropsNames(obj.GetType());
+            var propsNames = HelperFuncs.getSearchPropsNames(classObj.GetType());
+            var propValues = HelperFuncs.getSearchPropValues(classObj);
+            StringBuilder builder = new StringBuilder();
+
+            var propNamesAndValues = propsNames.Zip(propValues, (pn, pv) => new { propName = pn, propValue = pv }).ToList();
 
 
+            for (int i = 0; i < propNamesAndValues.Count; i++)
+            {
+                builder.Append(propNamesAndValues[i].propName + " = '" + propNamesAndValues[i].propValue + "'");
+                if (i != propNamesAndValues.Count - 1)
+                {
+                    builder.Append(" AND ");
+                }
+            }
 
-            inParams.Add(data);
+            string quertyWhere = "WHERE " + builder.ToString();
+            quertyWhere = quertyWhere.Replace(@"\", @"\\");
+
+
             var methodName = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name;
             string searchParams = "*";
-            string rootNamespace = @"root\CimV2";
-            string className = @"Win32_Printer";
+            string rootNamespace = HelperFuncs.getNamespace(classObj.GetType());
+            string className = HelperFuncs.getClassName(classObj.GetType());
 
-            string searchQuery = String.Format("SELECT {0} FROM {1} Where  Name = ' Brother RJ-403011' OR DeviceID = 'Brother RJ-403011'", searchParams, className);
+            string searchQuery = String.Format("SELECT {0} FROM {1} {2}", searchParams, className, quertyWhere);
 
             using (var searcher = new ManagementObjectSearcher(rootNamespace, searchQuery))
             {
@@ -49,9 +64,11 @@ namespace Kexla
                 }
             }
 
-
-
-            return default(T);
         }
+
+
+
+
+
     }
 }

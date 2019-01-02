@@ -11,6 +11,7 @@ namespace Kexla
 
         public string Name { get; set; }
 
+
         public WMIProps()
         {
 
@@ -21,5 +22,10 @@ namespace Kexla
         {
             this.Name = name;
         }
+
+
     }
+
+
+
 }

@@ -6,10 +6,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Kexla
 {
     public class HelperFuncs
     {
+
         public static string getClassName(Type t)
         {
             var att = t.GetCustomAttribute<WMIClass>(inherit: true);
@@ -21,6 +23,19 @@ namespace Kexla
 
             return className;
 
+        }
+
+        public static string getNamespace(Type t)
+        {
+            var att = t.GetCustomAttribute<WMIClass>(true);
+            string classNameSpace = String.Empty;
+
+            if (att.Namespace != null)
+            {
+                classNameSpace = att.Namespace.ToString();
+            }
+
+            return classNameSpace;
         }
 
         public static List<string> getSearchPropsNames(Type type)
@@ -51,7 +66,7 @@ namespace Kexla
             return propsValues;
         }
 
-        public static object getSearchObjects(ManagementObject manageObject, Type type)
+        public static object getSearchObjects(ManagementBaseObject manageObject, Type type)
         {
             var instance = Activator.CreateInstance(type);
             string propName = String.Empty;
@@ -131,6 +146,24 @@ namespace Kexla
         private static bool IsNullableType(Type type)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
+        }
+
+
+        public static string toString(object obj)
+        {
+            var sb = new StringBuilder();
+
+            var propsNames = HelperFuncs.getSearchPropsNames(obj.GetType());
+            var propValues = HelperFuncs.getSearchPropValues(obj);
+
+            var propNamesAndValues = propsNames.Zip(propValues, (n, w) => new { propName = n, propValue = w });
+
+            foreach (var item in propNamesAndValues)
+            {
+                sb.AppendLine(item.propName + ": " + item.propValue);
+            }
+
+            return sb.ToString();
         }
     }
 }
