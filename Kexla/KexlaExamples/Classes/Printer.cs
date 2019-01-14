@@ -19,7 +19,5 @@ namespace KexlaExamples
             WMIMethods.ExecuteMethod(this, newName);
 
         }
-
-
     }
 }

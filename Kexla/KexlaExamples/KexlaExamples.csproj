@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Kexla, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ofir.Kexla.0.2.0\lib\Kexla.dll</HintPath>
+      <HintPath>..\packages\Ofir.Kexla.0.3.0\lib\Kexla.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -47,7 +47,9 @@
   <ItemGroup>
     <Compile Include="Classes\NetworkAdapter.cs" />
     <Compile Include="Classes\NetworkLoginProfile.cs" />
+    <Compile Include="Classes\PhysicalDisk.cs" />
     <Compile Include="Classes\Printer.cs" />
+    <Compile Include="Classes\ProcessStartTrace.cs" />
     <Compile Include="Classes\WmiMonitorBrightness.cs" />
     <Compile Include="Classes\WmiMonitorBrightnessMethods.cs" />
     <Compile Include="Program.cs" />
