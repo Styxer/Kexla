@@ -37,7 +37,6 @@ namespace KexlaExamples
 
             var printer = CimV2searcher.Query<Printer>().Where(x => x.Name == "Brother RJ-4030").FirstOrDefault();
             if (printer != null)
-
                 printer.RenamePrinter(newName: "Brother RJ-4030xXx");
             #endregion
 

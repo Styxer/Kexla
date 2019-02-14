@@ -149,21 +149,25 @@ namespace Kexla
         }
 
 
-        public static string toString(object obj)
-        {
-            var sb = new StringBuilder();
+        //public static string myToString(object obj)
+        //{
+        //    var sb = new StringBuilder();
 
-            var propsNames = HelperFuncs.getSearchPropsNames(obj.GetType());
-            var propValues = HelperFuncs.getSearchPropValues(obj);
+        //    var propsNames = HelperFuncs.getSearchPropsNames(obj.GetType());
+        //    var propValues = HelperFuncs.getSearchPropValues(obj);
 
-            var propNamesAndValues = propsNames.Zip(propValues, (n, w) => new { propName = n, propValue = w });
+        //    var propNamesAndValues = propsNames.Zip(propValues, (pName, pValue) => new { propName = pName, propValue = pValue });
 
-            foreach (var item in propNamesAndValues)
-            {
-                sb.AppendLine(item.propName + ": " + item.propValue);
-            }
+        //    foreach (var item in propNamesAndValues)
+        //    {
+        //        sb.AppendLine(item.propName + ": " + item.propValue);
+        //        if(item.propValue.GetType().IsArray)
+        //        {
+                   
+        //        }
+        //    }
 
-            return sb.ToString();
-        }
+        //    return sb.ToString();
+        //}
     }
 }

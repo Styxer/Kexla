@@ -20,26 +20,26 @@ namespace Kexla
         private Type _type;
 
 
-        /// <summary>
-        /// initiate the watcher bases on WMIClass, throws an exception if class in not watchable
-        /// </summary>
-        /// <param name="scope">Desired scopre</param>
-        /// <param name="type">Type of object that will initiate the watch</param>
+
         public WMIWatcher(string scope, Type type)
         {
             _scope = scope;
             _type = type;
 
-            string className = HelperFuncs.getClassName(type);     
-                      
-            _query = String.Format("SELECT * FROM {0}", className);
-            createAndStartWatcher(); 
-           
+            string className = HelperFuncs.getClassName(type);
+       
+          
+            if (testIfEventWatchable(scope, className))
+            {
+                _query = String.Format("SELECT * FROM {0}", className);
+                createAndStartWatcher(); 
+            }
+            else
+            {
+                throw new Exception("Class is not an event class.");
+            }
         }
 
-        /// <summary>
-        ///  Create a WMI Event Watcher
-        /// </summary>
         private void createAndStartWatcher()
         {
             watcher = new ManagementEventWatcher(_scope, _query);
@@ -47,11 +47,6 @@ namespace Kexla
             watcher.Start();
         }
 
-        /// <summary>
-        /// read the reciver parameters
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Watcher_EventArrived(object sender, EventArrivedEventArgs e)
         {
             object obj = HelperFuncs.getSearchObjects(e.NewEvent, _type);
@@ -64,7 +59,35 @@ namespace Kexla
             watcher.Stop();
         }
 
-      
+        private bool testIfEventWatchable(string classNamespace, string className)
+        {
+            bool result = false;
+           using ( ManagementObjectSearcher searcher =
+                     new ManagementObjectSearcher(
+                     new ManagementScope(
+                     classNamespace),
+                     new WqlObjectQuery(
+                     String.Format("SELECT * FROM meta_class WHERE __Class = '{0}'", className)),
+                     null))
+            {
+                foreach (ManagementClass wmiClass in searcher.Get())
+                {
+                    {
+                        if (wmiClass.Derivation.Contains("__Event"))
+                        {
+                            result = true;
+                            break;
+
+                        }
+
+                    }
+
+                }
+            }
+
+            return result;
+
+        }
         
     }
 

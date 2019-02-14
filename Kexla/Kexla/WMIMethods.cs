@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
+using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Kexla
 {
-    public class WMIMethods//TODO read instumentation
+    public class WMIMethods
     {
+
+        private static string _methodName;
+
         /// <summary>
         /// Executes WMI instance method with  parameters
         /// </summary>
@@ -45,7 +49,7 @@ namespace Kexla
             quertyWhere = quertyWhere.Replace(@"\", @"\\");
 
 
-            var methodName = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name;
+            var methodName = String.IsNullOrEmpty(_methodName) ? new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name : _methodName;
             string searchParams = "*";
             string rootNamespace = HelperFuncs.getNamespace(classObj.GetType());
             string className = HelperFuncs.getClassName(classObj.GetType());
@@ -66,8 +70,20 @@ namespace Kexla
 
         }
 
+       
+        /// <summary>
+        /// Executes WMI instance method with  parameters asynchronously
+        /// </summary>
+        /// <param name="classObj"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public static async Task ExecuteMethodAsync(object classObj , params object[] parameters)
+        {
+            _methodName =  new System.Diagnostics.StackTrace().GetFrame(5).GetMethod().Name;
+            await Task.Run(() => ExecuteMethod(classObj, parameters));
+        }
 
-
+       
 
 
     }

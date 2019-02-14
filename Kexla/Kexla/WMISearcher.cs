@@ -4,23 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Management;
+using System.Net.NetworkInformation;
+using System.Threading;
+using Kexla.Classes;
+
 
 namespace Kexla
 {
     public class WMISearcher
     {
-        #region ctors
+        #region ctors       
 
+        private static string _rootNamespace = String.Empty;
 
-        private static string RootNamespace = String.Empty;
-
-        public WMISearcher(string _RootNamespace)
+        public WMISearcher(string RootNamespace)
         {
-            RootNamespace = _RootNamespace;
+            _rootNamespace = RootNamespace;
         }
         public WMISearcher()
         {
-
+            _rootNamespace = String.IsNullOrEmpty(_rootNamespace) ? @"root\CimV2" : _rootNamespace; 
         }
         #endregion
 
@@ -32,7 +35,8 @@ namespace Kexla
         /// <returns></returns>
         public IEnumerable<T> Query<T>()
         {
-            var rootNamespace = String.IsNullOrEmpty(RootNamespace) ? @"root\CimV2" : RootNamespace;
+
+            
             var results = new List<T>();
 
             var classNmae = HelperFuncs.getClassName(typeof(T));
@@ -43,14 +47,16 @@ namespace Kexla
             var searchQuery = String.Format("SELECT {0} FROM {1} ", searchprops, classNmae);
 
 
-            using (var searcher = new ManagementObjectSearcher(rootNamespace, searchQuery))
-            {
+            using (var searcher = new ManagementObjectSearcher(_rootNamespace, searchQuery))
+            {              
+
                 using (var searcherData = searcher.Get())
                 {
                     foreach (ManagementObject obj in searcherData)
-                    {
-
+                    {                         
+                        
                         var searchItem = (T)HelperFuncs.getSearchObjects(obj, typeof(T));
+
 
                         results.Add(searchItem);
 
@@ -61,6 +67,56 @@ namespace Kexla
 
 
             return results;
+        }
+
+
+        public ILookup<string, WMIKeyValues> getPrimaryKeyValues<T>()
+        {           
+           
+            var classNmae = HelperFuncs.getClassName(typeof(T));
+
+            var list = new List<WMIKeyValues>();                    
+
+
+            using (var wmiObject = new ManagementClass(_rootNamespace, classNmae, null))
+            {
+                foreach (ManagementObject c in wmiObject.GetInstances())
+                {
+                    foreach (PropertyData p in c.Properties)
+                    {
+                        foreach (QualifierData q in p.Qualifiers)
+                        {
+                            if (q.Name.Equals("key"))
+                            {
+                                list.Add(new WMIKeyValues(p.Name, c.GetPropertyValue(p.Name)));
+                            }
+                        }
+                    }
+                } 
+            }
+
+            ILookup<string, WMIKeyValues> byWMIKey = list.ToLookup(x => x.Key);
+
+            return byWMIKey;
+          
+        }
+
+        public async Task<ILookup<string, WMIKeyValues>> getPrimaryKeyValuesAsync<T>()
+        {
+            return await Task.Run(() => getPrimaryKeyValues<T>());
+        }
+
+
+        /// <summary>
+        /// Runs a async query against WMI. It will return all instances of the class corresponding to the WMI class set on the Type on IEnumerable.
+        /// </summary>
+        /// <typeparam name="T">The Type of IEnumerable that will be returned</typeparam>
+        /// <returns></returns>
+        public  async Task<IEnumerable<T>> QueryAsAsync<T>()
+        {            
+            return  await  Task.Run(() =>  Query<T>());
+           
+            
         }
 
 

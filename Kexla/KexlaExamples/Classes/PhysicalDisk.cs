@@ -16,7 +16,7 @@ namespace KexlaExamples
 
         public override string ToString()
         {
-            return HelperFuncs.toString(this);
+            return WMIHelper.toString(this);
         }
 
     }
