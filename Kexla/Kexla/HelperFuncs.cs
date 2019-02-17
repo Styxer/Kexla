@@ -42,12 +42,17 @@ namespace Kexla
         {
             var propsList = new List<string>();
 
-            foreach (PropertyInfo propInfo in type.GetProperties())
+            foreach (var propInfo in type.GetProperties())
             {
-                string prop = getWMIPropName(propInfo);
-                if (!String.IsNullOrEmpty(prop))
+                WMIIgnore ignoreProp = propInfo.GetCustomAttribute<WMIIgnore>();
+
+                if (ignoreProp == null)
                 {
-                    propsList.Add(getWMIPropName(propInfo));
+                    string prop = getWMIPropName(propInfo);
+                    if (!String.IsNullOrEmpty(prop))
+                    {
+                        propsList.Add(getWMIPropName(propInfo));
+                    }
                 }
             }
 
@@ -57,10 +62,14 @@ namespace Kexla
         public static List<object> getSearchPropValues(object obj)
         {
             var propsValues = new List<object>();
-            foreach (var info in obj.GetType().GetProperties())
+            foreach (var propInfo in obj.GetType().GetProperties())
             {
-                var value = info.GetValue(obj) ?? "null";
-                propsValues.Add(value);
+                WMIIgnore ignoreProp = propInfo.GetCustomAttribute<WMIIgnore>();
+                if (ignoreProp == null)
+                {
+                    var value = propInfo.GetValue(obj) ?? "null";
+                    propsValues.Add(value); 
+                }
             }
 
             return propsValues;

@@ -20,7 +20,10 @@ namespace Kexla
 
             foreach (var item in propNamesAndValues)
             {
-                sb.AppendLine(item.propName + ": " + item.propValue);
+                var value = item.propValue is string
+                ? item.propValue
+                : string.Join(", ", (IEnumerable<object>)item.propValue);
+                sb.AppendLine(item.propName + ": " + value);
                 
             }
 
