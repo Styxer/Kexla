@@ -10,6 +10,7 @@
     <RootNamespace>Kexla</RootNamespace>
     <AssemblyName>Kexla</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
