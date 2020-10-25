@@ -66,7 +66,7 @@ namespace KexlaExamples
 
             #region watch events
             //can throw Class is not an event class or accsess denied if not have right previlage 
-            var watcher = new WMIWatcher(@"\root\CIMV2", typeof(ProcessStartTrace)); 
+            var watcher = new WMIWatcher(@"\root\CIMV2", typeof(ProcessStartTrace));
             watcher.WMIEventArrived += watcher_WMIEventArrived;
 
             #endregion

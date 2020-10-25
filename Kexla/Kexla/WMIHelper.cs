@@ -19,12 +19,8 @@ namespace Kexla
             var propNamesAndValues = propsNames.Zip(propValues, (pName, pValue) => new { propName = pName, propValue = pValue });
 
             foreach (var item in propNamesAndValues)
-            {
-                var value = item.propValue is string
-                ? item.propValue
-                : string.Join(", ", (IEnumerable<object>)item.propValue);
-                sb.AppendLine(item.propName + ": " + value);
-                
+            {               
+                sb.AppendLine(item.propName + ": " + item.propValue);                
             }
 
             return sb.ToString();

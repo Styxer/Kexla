@@ -12,27 +12,26 @@ namespace Kexla
     public class HelperFuncs
     {
 
-        public static string getClassName(Type t)
+        public static string getClassName(Type type)
         {
-            var att = t.GetCustomAttribute<WMIClass>(inherit: true);
+            var attribute = type.GetCustomAttribute<WMIClass>(inherit: false);            
             string className = String.Empty;
-            if (att != null)
+            if (attribute != null)
             {
-                className = att.Name;
+                className = attribute.Name;
             }
 
             return className;
 
         }
 
-        public static string getNamespace(Type t)
+        public static string getNamespace(Type type)
         {
-            var att = t.GetCustomAttribute<WMIClass>(true);
+            var attribute = type.GetCustomAttribute<WMIClass>(inherit: false);          
             string classNameSpace = String.Empty;
-
-            if (att.Namespace != null)
+            if (attribute.Namespace != null)
             {
-                classNameSpace = att.Namespace.ToString();
+                classNameSpace = attribute.Namespace.ToString();
             }
 
             return classNameSpace;
@@ -44,7 +43,7 @@ namespace Kexla
 
             foreach (var propInfo in type.GetProperties())
             {
-                WMIIgnore ignoreProp = propInfo.GetCustomAttribute<WMIIgnore>();
+                WMIIgnore ignoreProp = propInfo.GetCustomAttribute<WMIIgnore>(inherit: false);
 
                 if (ignoreProp == null)
                 {
@@ -64,7 +63,7 @@ namespace Kexla
             var propsValues = new List<object>();
             foreach (var propInfo in obj.GetType().GetProperties())
             {
-                WMIIgnore ignoreProp = propInfo.GetCustomAttribute<WMIIgnore>();
+                WMIIgnore ignoreProp = propInfo.GetCustomAttribute<WMIIgnore>(inherit: false);
                 if (ignoreProp == null)
                 {
                     var value = propInfo.GetValue(obj) ?? "null";
@@ -95,9 +94,10 @@ namespace Kexla
                     {
                         propInfo.SetValue(obj: instance, value: null);
                     }
-                    else if (targetType == typeof(DateTime) || targetType == typeof(DateTimeOffset) | targetType == typeof(TimeSpan))
+                    else if (targetType == typeof(DateTime) || targetType == typeof(DateTimeOffset) || targetType == typeof(TimeSpan))
                     {
-                        WMIProps prop = propInfo.GetCustomAttribute<WMIProps>();
+                        
+                        WMIProps prop = propInfo.GetCustomAttribute<WMIProps>(inherit: false);
                         var dateTime = ManagementDateTimeConverter.ToDateTime(propValue.ToString());
 
                         if (targetType == typeof(DateTime))
@@ -129,7 +129,7 @@ namespace Kexla
 
             if (checkForIgnorePors(propInfo))
             {
-                WMIProps prop = propInfo.GetCustomAttribute<WMIProps>();
+                WMIProps prop = propInfo.GetCustomAttribute<WMIProps>(inherit: false);
                 if (prop == null)
                     propName = propInfo.Name;
                 else
@@ -142,7 +142,7 @@ namespace Kexla
         private static bool checkForIgnorePors(PropertyInfo propInfo)
         {
             bool result = false;
-            WMIIgnore ignoreProp = propInfo.GetCustomAttribute<WMIIgnore>();
+            WMIIgnore ignoreProp = propInfo.GetCustomAttribute<WMIIgnore>(inherit: false);
 
 
             if (ignoreProp == null)
@@ -160,23 +160,6 @@ namespace Kexla
 
         //public static string myToString(object obj)
         //{
-        //    var sb = new StringBuilder();
-
-        //    var propsNames = HelperFuncs.getSearchPropsNames(obj.GetType());
-        //    var propValues = HelperFuncs.getSearchPropValues(obj);
-
-        //    var propNamesAndValues = propsNames.Zip(propValues, (pName, pValue) => new { propName = pName, propValue = pValue });
-
-        //    foreach (var item in propNamesAndValues)
-        //    {
-        //        sb.AppendLine(item.propName + ": " + item.propValue);
-        //        if(item.propValue.GetType().IsArray)
-        //        {
-                   
-        //        }
-        //    }
-
-        //    return sb.ToString();
-        //}
+       
     }
 }
