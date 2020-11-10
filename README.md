@@ -9,7 +9,9 @@ Kexla is avialbe via [NuGet](https://www.nuget.org/packages/Ofir.Kexla).
 ## Whats new 0.5
 Added new constructors that enables running queries on remore computers
 you can now use any combination of 
+
 hostname | Authentication Level | domain
+
 to create queries on remote computers
 for example
 ```C# 
