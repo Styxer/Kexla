@@ -13,19 +13,97 @@ namespace Kexla
 {
     public class WMISearcher
     {
-        #region ctors       
+        
 
-        private static string _rootNamespace = String.Empty;
+        //private static string _rootNamespace = String.Empty;
+        public ManagementScope Scope { get; set; }
 
-        public WMISearcher(string RootNamespace)
-        {
-            _rootNamespace = RootNamespace;
-        }
+        #region Ctor's
+        /// <summary>
+        /// Creates a WMISearcher object targeting the CimV2 scope. Default credentials are used.
+        /// </summary>
         public WMISearcher()
         {
-            _rootNamespace = String.IsNullOrEmpty(_rootNamespace) ? @"root\CimV2" : _rootNamespace; 
+            Scope = new ManagementScope(@"root\CimV2")
+            {
+                Options = new ConnectionOptions
+                {
+                    Impersonation = ImpersonationLevel.Impersonate
+                }
+            };
+        }
+
+        /// <summary>
+        /// Creates a WMISearcher object targeting the desired scope scope. Default credentials are used.
+        /// </summary>
+        /// <param name="scope">WMI namespace</param>
+        public WMISearcher(string scope)
+        {
+            Scope = new ManagementScope(scope)
+            {
+                Options = new ConnectionOptions
+                {
+                    Impersonation = ImpersonationLevel.Impersonate
+                }
+            };
+        }
+        /// <summary>
+        /// Creates a WMIHelper object targeting the desired scope on the specified hostname with optional authentication level(Default lvl is Default)
+        /// Beware that in order to make WMI calls work, 
+        /// the user running the application must have the corresponding privileges on the client machine. 
+        /// Otherwise it will throw an 'Access Denied' exception.
+        /// </summary>
+        /// <param name="scope">WMI namespace</param>
+        /// <param name="hostname">Client machine</param>
+        /// <param name="auth">Athentication level</param>
+        public WMISearcher(string scope, string hostname, AuthenticationLevel auth = AuthenticationLevel.Default)
+        {
+            Scope = new ManagementScope(String.Format("\\\\{0}\\{1}", hostname, scope))
+            {
+                Options = new ConnectionOptions
+                {
+                    Impersonation = ImpersonationLevel.Impersonate,
+                    Authentication = auth
+                }
+            };
+        }
+
+        /// <summary>
+        /// Creates a WMIHelper object targeting the desired scope on the specified hostname with a domain to use when authorizing WMI calls on the client machine.
+        /// Beware that in order to make WMI calls work, the user running the application must have the corresponding privileges on the client machine. Otherwise it will throw an 'Access Denied' exception.
+        /// </summary>
+        /// <param name="scope"></param>
+        /// <param name="hostname"></param>
+        /// <param name="domain"></param>
+        /// <param name="auth">Athentication level</param>
+        public WMISearcher(string scope, string hostname, string domain, AuthenticationLevel auth = AuthenticationLevel.Default)
+        {
+            Scope = new ManagementScope(String.Format("\\\\{0}\\{1}", hostname, scope))
+            {
+                Options = new ConnectionOptions
+                {
+                    Impersonation = ImpersonationLevel.Impersonate,
+                    Authentication = auth,
+                    Authority = $"ntlmdomain:{domain}"
+                }
+            };
         }
         #endregion
+
+        /// <summary>
+        /// 
+        /// </summary>
+        //public WMISearcher()
+        //{
+        //    _rootNamespace = String.IsNullOrEmpty(_rootNamespace) ? @"root\CimV2" : _rootNamespace;
+        //}
+
+        //public WMISearcher(string RootNamespace)
+        //{
+        //    _rootNamespace = RootNamespace;
+        //}
+
+        
 
 
         /// <summary>
@@ -46,8 +124,8 @@ namespace Kexla
 
             var searchQuery = String.Format("SELECT {0} FROM {1} ", searchprops, classNmae);
 
-
-            using (var searcher = new ManagementObjectSearcher(_rootNamespace, searchQuery))
+            
+            using (var searcher = new ManagementObjectSearcher(Scope, new ObjectQuery(searchQuery)))
             {              
 
                 using (var searcherData = searcher.Get())
@@ -70,7 +148,7 @@ namespace Kexla
         }
 
 
-        public ILookup<string, WMIKeyValues> getPrimaryKeyValues<T>()
+        public ILookup<string, WMIKeyValues> GetPrimaryKeyValues<T>()
         {           
            
             var classNmae = HelperFuncs.getClassName(typeof(T));
@@ -78,7 +156,7 @@ namespace Kexla
             var list = new List<WMIKeyValues>();                    
 
 
-            using (var wmiObject = new ManagementClass(_rootNamespace, classNmae, null))
+            using (var wmiObject = new ManagementClass(Scope.Path.NamespacePath, classNmae, options: null))
             {
                 foreach (ManagementObject c in wmiObject.GetInstances())
                 {
@@ -101,9 +179,9 @@ namespace Kexla
           
         }
 
-        public async Task<ILookup<string, WMIKeyValues>> getPrimaryKeyValuesAsync<T>()
+        public async Task<ILookup<string, WMIKeyValues>> GetPrimaryKeyValuesAsync<T>()
         {
-            return await Task.Run(() => getPrimaryKeyValues<T>());
+            return await Task.Run(() => GetPrimaryKeyValues<T>());
         }
 
 
