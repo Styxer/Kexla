@@ -1,6 +1,8 @@
 # Kexla
 
 ## Getting Started 
+![Nuget](https://img.shields.io/nuget/v/Ofir.Kexla)
+![Nuget](https://img.shields.io/nuget/dt/Ofir.Kexla)
 
 Kexla is avialbe via [NuGet](https://www.nuget.org/packages/Ofir.Kexla). 
 
