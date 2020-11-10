@@ -88,6 +88,28 @@ namespace Kexla
                 }
             };
         }
+
+          /// <summary>
+        /// Creates a WMIHelper object targeting the desired scope on the specified hostname with specified credentials.
+        /// </summary>
+        /// <param name="scope">WMI namespace</param>
+        /// <param name="hostname">Client machine</param>
+        /// <param name="username">Username that will make the WMI connection</param>
+        /// <param name="password">The username´s password</param>
+        /// <param name="auth">Athentication level</param>
+        public WMISearcher(string scope, string hostname, string username, string password, AuthenticationLevel auth = AuthenticationLevel.Default)
+        {
+            Scope = new ManagementScope(String.Format("\\\\{0}\\{1}", hostname, scope))
+            {
+                Options = new ConnectionOptions
+                {
+                    Impersonation = ImpersonationLevel.Impersonate,
+                    Authentication = auth,
+                    Username = username,
+                    Password = password
+                }
+            };
+        }
         #endregion
 
         /// <summary>

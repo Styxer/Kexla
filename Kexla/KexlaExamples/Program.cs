@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,7 +12,9 @@ namespace KexlaExamples
     {
         static void Main(string[] args)
         {
-            var CimV2searcher = new WMISearcher(); //root\CimV2 is the defualt namespace
+            //var CimV2searcher = new WMISearcher();
+            var CimV2searcher = new WMISearcher(scope: "root\\CimV2", hostname: "W2019SRV-DEV",
+                username: "Admin", password: "pass123"); ; //root\CimV2 is the defualt namespace
 
 
 
