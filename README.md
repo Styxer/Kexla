@@ -6,6 +6,15 @@
 
 Kexla is avialbe via [NuGet](https://www.nuget.org/packages/Ofir.Kexla). 
 
+## Whats new 0.5.5
+added an option to directly use a string query at ```C# WMISearcher.Query```
+
+for example
+
+```C# 
+var networkQuery = CimV2searcher.Query<NetworkAdapter>("SELECT * FROM Win32_NetworkAdapter");
+```
+
 ## Whats new 0.5
 Added new constructors that enables running queries on remore computers
 you can now use any combination of 
