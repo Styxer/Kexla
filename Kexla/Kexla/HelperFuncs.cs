@@ -81,6 +81,7 @@ namespace Kexla
 
             foreach (var propInfo in instance.GetType().GetProperties())
             {
+              
                 propName = getWMIPropName(propInfo);
 
                 if (!String.IsNullOrEmpty(propName))
@@ -96,7 +97,7 @@ namespace Kexla
                     }
                     else if (targetType == typeof(DateTime) || targetType == typeof(DateTimeOffset) || targetType == typeof(TimeSpan))
                     {
-                        
+
                         WMIProps prop = propInfo.GetCustomAttribute<WMIProps>(inherit: false);
                         var dateTime = ManagementDateTimeConverter.ToDateTime(propValue.ToString());
 
@@ -117,7 +118,8 @@ namespace Kexla
                     {
                         propInfo.SetValue(obj: instance, value: Convert.ChangeType(value: propValue, conversionType: propInfo.PropertyType));
                     }
-                }
+                } 
+                
             }
 
             return instance;
@@ -158,8 +160,17 @@ namespace Kexla
         }
 
 
-        //public static string myToString(object obj)
-        //{
+        public static string BuildQuery<T>()
+        {
+            var classNmae = HelperFuncs.getClassName(typeof(T));
+
+            var searchprops = String.Join(" , ", HelperFuncs.getSearchPropsNames(typeof(T)));
+
+
+            return String.Format("SELECT {0} FROM {1} ", searchprops, classNmae);
+
+            
+        }
        
     }
 }

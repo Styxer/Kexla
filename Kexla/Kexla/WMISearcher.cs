@@ -12,10 +12,7 @@ using Kexla.Classes;
 namespace Kexla
 {
     public class WMISearcher
-    {
-        
-
-        //private static string _rootNamespace = String.Empty;
+    {       
         public ManagementScope Scope { get; set; }
 
         #region Ctor's
@@ -111,64 +108,34 @@ namespace Kexla
             };
         }
         #endregion
-
-        /// <summary>
-        /// 
-        /// </summary>
-        //public WMISearcher()
-        //{
-        //    _rootNamespace = String.IsNullOrEmpty(_rootNamespace) ? @"root\CimV2" : _rootNamespace;
-        //}
-
-        //public WMISearcher(string RootNamespace)
-        //{
-        //    _rootNamespace = RootNamespace;
-        //}
-
-        
-
+             
 
         /// <summary>
         /// Runs a query against WMI. It will return all instances of the class corresponding to the WMI class set on the Type on IEnumerable.
         /// </summary>
         /// <typeparam name="T">The Type of IEnumerable that will be returned</typeparam>
-        /// <returns></returns>
-        public IEnumerable<T> Query<T>()
+        /// <returns></returns>     
+        public IEnumerable<T> Query<T>(string searchQuery = "")
         {
 
-            
-            var results = new List<T>();
-
-            var classNmae = HelperFuncs.getClassName(typeof(T));
-
-            var searchprops = String.Join(" , ", HelperFuncs.getSearchPropsNames(typeof(T)));
+            searchQuery = String.IsNullOrEmpty(searchQuery) ? HelperFuncs.BuildQuery<T>() : searchQuery;
 
 
-            var searchQuery = String.Format("SELECT {0} FROM {1} ", searchprops, classNmae);
-
-            
             using (var searcher = new ManagementObjectSearcher(Scope, new ObjectQuery(searchQuery)))
-            {              
+            {
 
                 using (var searcherData = searcher.Get())
                 {
+                    
                     foreach (ManagementObject obj in searcherData)
-                    {                         
-                        
-                        var searchItem = (T)HelperFuncs.getSearchObjects(obj, typeof(T));
-
-
-                        results.Add(searchItem);
-
+                    {                        
+                        yield return (T)HelperFuncs.getSearchObjects(obj, typeof(T));                      
+                                              
 
                     }
                 }
-            }
-
-
-            return results;
+            }       
         }
-
 
         public ILookup<string, WMIKeyValues> GetPrimaryKeyValues<T>()
         {           
@@ -214,8 +181,7 @@ namespace Kexla
         /// <returns></returns>
         public  async Task<IEnumerable<T>> QueryAsAsync<T>()
         {            
-            return  await  Task.Run(() =>  Query<T>());
-           
+            return  await  Task.Run(() =>  Query<T>());           
             
         }
 
