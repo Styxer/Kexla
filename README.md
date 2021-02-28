@@ -4,10 +4,10 @@
 ![Nuget](https://img.shields.io/nuget/v/Ofir.Kexla)
 ![Nuget](https://img.shields.io/nuget/dt/Ofir.Kexla)
 
-Kexla is avialbe via [NuGet](https://www.nuget.org/packages/Ofir.Kexla). 
+Kexla is available via [NuGet](https://www.nuget.org/packages/Ofir.Kexla). 
 
 ## Whats new 0.5.5
-added an option to directly use a string query at ```C# WMISearcher.Query```
+Added an option to directly use a string query at ```C# WMISearcher.Query```
 
 for example
 
@@ -34,7 +34,7 @@ var CimV2searcher = new WMISearcher(scope: "root\\CimV2", hostname: "W2019SRV-DE
 
 ###### A - Query The Data
 
-1. Add the packge to your project via NuGet package manager
+1. Add the package to your project via NuGet package manager
 
 2. Use the libary
 ```C# 
