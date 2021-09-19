@@ -10,6 +10,8 @@ namespace KexlaExamples
 {
     class Program
     {
+
+
         static void Main(string[] args)
         {
             //var CimV2searcher = new WMISearcher();
